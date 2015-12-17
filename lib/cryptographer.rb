@@ -2,18 +2,15 @@ require_relative 'key_generator'
 require_relative 'wheel'
 
 class Cryptographer
-  attr_reader :the_wheel, :rotations, :decrypt_rotations, :encrypted_message, :decrypted_message, :the_key, :message, :key, :date
+  attr_reader :the_wheel, :rotations, :decrypt_rotations, :encrypted_message, :decrypted_message, :the_key
 
-  def initialize(message, key = nil, date = nil)
+  def initialize
     @the_key = KeyGenerator.new
     @the_wheel = Wheel.new
     @rotations = []
     @decrypt_rotations = []
     @encrypted_message = encrypted_message
     @decrypted_message = decrypted_message
-    @message = message
-    @key = key
-    @date = date
   end
 
   def encryptor(message, key = nil, date = nil)

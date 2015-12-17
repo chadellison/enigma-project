@@ -1,9 +1,9 @@
 require_relative 'wheel'
 
 class TheCracker
-  attr_reader :encrypted_message, :the_wheel, :crack_rotator, :cracked_message, :crack_indices, :key_location, :end_of_message, :date
+  attr_reader :encrypted_message, :the_wheel, :crack_rotator, :cracked_message, :crack_indices, :key_location, :end_of_message
 
-  def initialize(encrypted_message, date)
+  def initialize
     @encrypted_message = encrypted_message
     @the_wheel = Wheel.new
     @crack_rotator = []
@@ -11,10 +11,9 @@ class TheCracker
     @cracked_message = cracked_message
     @key_location = key_location
     @end_of_message = [1, 1, 34, 25, 35, 1, 1]
-    @date = date
   end
 
-  def crack(encrypted_message, date)
+  def crack(encrypted_message, date = 2)
     @encrypted_message = encrypted_message.chars
     @key_location = encrypted_message.length
     7.times { @crack_rotator << @encrypted_message.pop }
