@@ -2,41 +2,42 @@ require_relative 'key_generator'
 require_relative 'wheel'
 
 class Cryptographer
-  attr_reader :key, :key_generator, :the_wheel, :rotations, :decrypt_rotations, :encrypted_message, :decrypted_message
+  attr_reader :the_wheel, :rotations, :decrypt_rotations, :encrypted_message, :decrypted_message, :the_key, :message, :key, :date
 
-  def initialize
-    @key_generator = KeyGenerator.new
+  def initialize(message, key = nil, date = nil)
+    @the_key = KeyGenerator.new
     @the_wheel = Wheel.new
     @rotations = []
     @decrypt_rotations = []
     @encrypted_message = encrypted_message
     @decrypted_message = decrypted_message
+    @message = message
+    @key = key
+    @date = date
   end
 
-  def encryptor(message)
-    #key_generator
-    #the_wheel
+  def encryptor(message, key = nil, date = nil)
+    secret_key = the_key.key_generation(key)
     message = message.to_s.downcase.chars
     while message.first != nil
-      key_generator.key_generation.map do |key|
+      secret_key.map do |key|
         @rotations << (key + the_wheel.wheel.index(message.shift))
         break if message.length == 0
       end
     end
-    @rotations #not sure if you need to return this
+    encryption
   end
 
-  def decryptor(message, key = key_generator.current_key)
-    key_generator.initial_key_values(key.to_i)
-    #the_wheel
+  def decryptor(message, key = key_generator, date = nil)
+    secret_key = the_key.key_generation(key)
     message = message.to_s.downcase.chars
     while message.first != nil
-      key_generator.key_generation.map do |key|
+      secret_key.map do |key|
         @decrypt_rotations << (key + the_wheel.wheel.reverse.index(message.shift))
         break if message.length == 0
       end
     end
-    @decrypt_rotations #not sure if you need to return this
+    decryption
   end
 
   def encryption
@@ -53,15 +54,3 @@ class Cryptographer
     @decrypted_message = decryption.join
   end
 end
-
-a = Cryptographer.new
-a.encryptor("some refactoring action is on the way..end..")
-puts a.key_generator.current_key
-puts "--"
-# #
-puts a.encryption
-puts a.encrypted_message
-#
-# puts a.decryptor("k.56ac6zpslbhm62j.m0hhr0b", "73123")
-# puts a.decryption
-# puts a.decrypted_message

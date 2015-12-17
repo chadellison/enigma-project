@@ -1,7 +1,8 @@
 class KeyGenerator
   attr_reader :offset_key
   attr_accessor :current_key
-  def initialize
+
+  def initialize(current_key = nil, date = nil)
     @current_key = current_key
     @offset_key = offset_key
   end
@@ -27,8 +28,12 @@ class KeyGenerator
     end
   end
 
-  def offset
-    current_date = Time.now.strftime("%m%d%y")
+  def offset(date = nil)
+    if date.nil?
+      current_date = Time.now.strftime("%d%m%y")
+    else
+      current_date = date
+    end
     current_date = current_date.to_i ** 2
     offset = current_date.to_s[-4..-1]
     offset = offset.chars.map do |number|
@@ -36,14 +41,21 @@ class KeyGenerator
     end
   end
 
-  def key_generation
-    if @current_key == nil
-      the_key = initial_key_values
+  def key_generation(key = nil)
+    if key == nil
+      the_key = initial_key_values(random_number_generator)
     else
-      the_key = @current_key
+      the_key = initial_key_values(key)
     end
     @offset_key = the_key.zip(offset).map do |key|
       key.reduce(0, :+)
     end
   end
+end
+
+if __FILE__ == $0
+  a = KeyGenerator.new
+  a.key_generation(12345)
+  puts a.current_key
+  puts a.offset_key
 end
