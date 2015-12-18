@@ -1,3 +1,4 @@
+require 'simplecov'
 require 'minitest/autorun'
 require_relative '../lib/cryptographer'
 require_relative 'test_helper'

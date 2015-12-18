@@ -1,3 +1,4 @@
+require 'simplecov'
 require 'minitest/autorun'
 require_relative '../lib/enigma'
 require_relative 'test_helper'
