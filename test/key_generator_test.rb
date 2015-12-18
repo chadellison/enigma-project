@@ -1,4 +1,5 @@
 require 'simplecov'
+SimpleCov.start
 require 'minitest/autorun'
 require_relative '../lib/key_generator'
 require_relative 'test_helper'
