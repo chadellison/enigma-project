@@ -1,53 +1,50 @@
-require_relative 'key_generator'
 require_relative 'wheel'
+require_relative 'key_generator'
 
 class Cryptographer
-  attr_reader :the_wheel, :rotations, :decrypt_rotations, :encrypted_message, :decrypted_message, :the_key
+  attr_reader :wheel
 
   def initialize
-    @the_key = KeyGenerator.new
-    @the_wheel = Wheel.new
-    @rotations = []
-    @decrypt_rotations = []
-    @encrypted_message = encrypted_message
-    @decrypted_message = decrypted_message
+    @wheel = Wheel.new
   end
 
-  def encryptor(message, key = nil, date = nil)
-    secret_key = the_key.key_generation(key)
+  def encrypt(message, key = nil, date = nil)
+    rotate = KeyGenerator.new(key, date).rotator
     message = message.to_s.downcase.chars
+    rotations = []
     while message.first != nil
-      secret_key.map do |key|
-        @rotations << (key + the_wheel.wheel.index(message.shift))
+      rotate.map do |key|
+        rotations << (key + wheel.wheel.index(message.shift))
         break if message.length == 0
       end
     end
-    encryption
+    encryption(rotations)
   end
 
-  def decryptor(message, key = key_generator, date = nil)
-    secret_key = the_key.key_generation(key)
+  def decrypt(message, key = nil, date = nil)
+    rotate = KeyGenerator.new(key, date).rotator
     message = message.to_s.downcase.chars
+    rotations = []
     while message.first != nil
-      secret_key.map do |key|
-        @decrypt_rotations << (key + the_wheel.wheel.reverse.index(message.shift))
+      rotate.map do |key|
+        rotations << (key + wheel.wheel.reverse.index(message.shift))
         break if message.length == 0
       end
     end
-    decryption
+    decryption(rotations)
   end
 
-  def encryption
-    encryption = @rotations.map do |index|
-      the_wheel.wheel[index % 39]
+  def encryption(rotations)
+    encryption = rotations.map do |index|
+      wheel.wheel[index % 44]
     end
-    @encrypted_message = encryption.join
+    encryption.join
   end
 
-  def decryption
-    decryption = @decrypt_rotations.map do |index|
-      the_wheel.wheel.reverse[index % 39]
+  def decryption(rotations)
+    decryption = rotations.map do |index|
+      wheel.wheel.reverse[index % 44]
     end
-    @decrypted_message = decryption.join
+    decryption.join
   end
 end

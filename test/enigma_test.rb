@@ -5,38 +5,39 @@ require_relative '../lib/enigma'
 require_relative 'test_helper'
 require 'pry'
 
+
+
 class EnigmaTest < Minitest::Test
-  def test_it_initiates
+  def test_it_makes_an_enigma_object
     enigma = Enigma.new
-    assert_equal Enigma, enigma.class
+    assert Enigma, enigma.class
   end
 
-  def test_it_can_encrypt_any_string_with_or_without_a_provided_key
+  def test_the_encrypt_method_takes_three_arguments_but_only_needs_one
     enigma = Enigma.new
+    assert enigma.encrypt("jones", "12345", 171082)
     assert_equal 5, enigma.encrypt("jones").length
-    assert_equal String, enigma.encrypt("jones", 46834).class
+    assert_equal String, enigma.encrypt("jones", 12345).class
   end
 
-  def test_it_can_encrypt_any_string_with_a_key_given_as_an_integer_or_number
+  def test_the_encrypt_method_defaults_to_a_random_key_and_current_date_if_not_provided
     enigma = Enigma.new
-    assert_equal 10, enigma.encrypt("this is it", "34672").length
-    assert_equal 10, enigma.encrypt("this is it", 36754).length
+    assert enigma.encrypt("jones")
   end
 
-  def test_the_encrypt_method_validly_encrypts_a_message_whether_a_key_is_passed_to_it_or_not
+  def test_the_encrypt_method_encrypts_a_message_based_on_the_date_and_key
     enigma = Enigma.new
-    assert_equal "this is a valid encryption ..end..", enigma.crack("2.shg,2zj152u,nznemg7g3 xeh0h8x5h2")
-    assert_equal "this is a valid encryption ..end..", enigma.decrypt(".6f3p7piswsl37aiw,,2dbqt6,7jq3koqx", 12345)
+    assert_equal "1;fk rok5a2z6rlnwrkz6!*", enigma.encrypt("Jones went to the store", 12345, 191215)
   end
 
-  def test_the_decrypt_method_decrypts_any_valid_message_with_a_provided_key
+  def test_the_decrypt_method_takes_three_arguments_it_defualts_to_the_current_date
     enigma = Enigma.new
-    assert_equal "here is a message to decrypt", enigma.decrypt("81b4y5cx1u94gcx65udby012fi,g", 99999)
+    assert enigma.decrypt("adklfjadklf", 12345, 180293)
+    assert enigma.decrypt("dfjasl;fk")
   end
 
-  def test_it_will_crack_any_validly_encrypted_message_that_ends_with_dot_dot_end_dot_dot
+  def test_the_decrypt_method_decrypts_a_message_based_on_the_key_and_date
     enigma = Enigma.new
-    assert_equal "here is a message that must be cracked ..end..", enigma.crack("b90u4a1n72vumkjw.22x7lg2ok2n89gsl5l0.8go59wt53")
-    assert_equal "this one had a key passed in ..end..", enigma.crack("sy0d95529ys19rp8dcpa,9 2co0.9pq2muqw")
+    assert_equal "jones went to the store 5 times", enigma.decrypt("7j2w!5.w.oh.,58z257.,mtkl580 _7", 67953, 23183)
   end
 end

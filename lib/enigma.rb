@@ -1,23 +1,16 @@
-require_relative 'cryptographer'
-require_relative 'the_cracker'
+require_relative '../lib/cryptographer'
+require_relative '../lib/the_cracker'
 
 class Enigma
-  attr_reader :key_generator, :current_date
-
-  def initialize
-    @key_generator = KeyGenerator.new
-    @current_date = Time.now.strftime("%m%d%y")
+  def encrypt(message, key = nil, date = nil)
+    Cryptographer.new.encrypt(message, key, date)
   end
 
-  def encrypt(message, key = nil, date = current_date)
-    Cryptographer.new.encryptor(message, key, date = current_date)
+  def decrypt(message, key = nil, date = nil)
+    Cryptographer.new.decrypt(message, key, date)
   end
 
-  def decrypt(message, key = nil, date = current_date)
-    Cryptographer.new.decryptor(message, key, date = current_date)
-  end
-
-  def crack(encrypted_message, date = current_date)
-    TheCracker.new.crack(encrypted_message)
+  def crack(message)
+    TheCracker.new.crack(message)
   end
 end

@@ -1,11 +1,11 @@
 require_relative 'cryptographer.rb'
 
 message = File.read(ARGV[0]).chomp
-key = rand(99999)
-date = Time.new.strftime("%d""%m""%y")
+key = rand(0..99999)
+date = Time.new.strftime("%d%m%y").to_i
 
-encrypted = Cryptographer.new(message, key, date).encryptor(message, key, date)
+encrypted = Cryptographer.new.encrypt(message, key, date)
 
 File.write(ARGV[1], encrypted)
 
-puts "Created #{ARGV[2]} with the key #{key} and date #{date}"
+puts "Created #{ARGV[1]} with the key #{key} and date #{date}"

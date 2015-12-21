@@ -7,36 +7,36 @@ require 'pry'
 
 class TheCrackerTest < Minitest::Test
 
+  def test_it_is_a_part_of_the_cracker_class
+    crack = TheCracker.new
+    assert_equal TheCracker, crack.class
+  end
+
   def test_it_creates_a_wheel_object_when_it_is_initialized
     crack = TheCracker.new
     assert_equal Wheel, crack.the_wheel.class
   end
 
-  def test_the_crack_mathod_takes_a_string_as_an_argument_and_converts_it_to_an_array
+  def test_the_crack_rotator_method_loads_the_rotator_with_the_last_seven_encrypted_message_index_rumbers
     message_cracker = TheCracker.new
-    message_cracker.crack("dkfsoeh")
-    assert_equal Array, message_cracker.encrypted_message.class
-  end
-
-  def test_the_crack_method_loads_the_rotator_with_four_rumbers
-    message_cracker = TheCracker.new
-    message_cracker.crack("adsfiueefdasjkh")
-    assert_equal 4, message_cracker.crack_rotator.length
-    assert_equal Fixnum, message_cracker.crack_rotator.sample.class
+    assert_equal Fixnum, message_cracker.crack_rotator("fdakfjd").sample.class
+    crack = TheCracker.new
+    assert_equal [42, 41, 40, 39, 38, 37, 36], crack.crack_rotator("abcdefgh")
   end
 
   def test_the_end_of_message_array_is_properly_indexed
     message_cracker = TheCracker.new
-    assert_equal [1, 1, 34, 25, 35, 1, 1], message_cracker.end_of_message
+    assert_equal [6, 6, 39, 30, 40, 6, 6], message_cracker.end_of_message
   end
 
   def test_the_compute_rotator_method_stores_the_difference_between_the_encrypted_characters_and_end
-    skip
     message_cracker = TheCracker.new
-    assert_equal [38, 38, 5, 14, 4, 38, 38], message_cracker.crack_rotator
+    assert_equal [42, 41, 40, 39, 38, 37, 36], message_cracker.crack_rotator("abcdefgh")
+    assert_equal [6, 6, 39, 30, 40, 6, 6], message_cracker.end_of_message
+    assert_equal [36, 35, 1, 9, 42, 31, 30], message_cracker.compute_rotator
   end
 
-  def test_it_stores_the_numeric_values_of_the_encrypted_message_minus_the_end
+  def test_the_crack_indices_store_the_numeric_values_of_the_encrypted_message_minus_the_end
     message_cracker = TheCracker.new
     message_cracker.crack("dasfehkjhoiuvncm,z")
     assert message_cracker.crack_indices
@@ -58,13 +58,9 @@ class TheCrackerTest < Minitest::Test
     assert_equal 0, the_crack.key_location % 4
   end
 
-  def test_print_cracked_message_cracks_any_message_with_a_valid_key_that_ends_with_dot_dot_end_dot_dot
+  def test_print_cracked_message_cracks_any_message_with_a_valid_key_and_ending
     the_cracker = TheCracker.new
-    the_cracker.crack("6a2nkb,5n3x,p 7okfyn560,l4yiq4s")
-    assert_equal "this is a decent message..end..", the_cracker.print_cracked_message
+    assert_equal "here is another message about jones ..end..",
+    the_cracker.crack("z3jkk7k!s,gzz3j!43kys5*!s0g0.rbu53k!ls*tvs3")
   end
-  # def test_it_lines the rotator up according to the length of the message
-  # end
-
-
 end

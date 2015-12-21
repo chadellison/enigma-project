@@ -1,7 +1,6 @@
 class Wheel
-  attr_reader :wheel
-
-  def initialize
-    @wheel = "abcdefghijklmnopqrstuvwxyz0123456789 .,".chars
+  def wheel
+    "abcdefghijklmnopqrstuvwxyz0123456789 .,;*@!_".chars
   end
+
 end

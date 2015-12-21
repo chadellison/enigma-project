@@ -1,61 +1,44 @@
 class KeyGenerator
-  attr_reader :offset_key
-  attr_accessor :current_key
+  attr_reader :key, :date, :offset
 
-  def initialize(current_key = nil, date = nil)
-    @current_key = current_key
-    @offset_key = offset_key
+  def initialize(key = random_number, date = current_date)
+    @key = key
+    @date = date
   end
 
-  def random_number_generator
-    key = []
-    each_key_value = (0..9).to_a
-    5.times do
-      key << each_key_value.sample
-    end
-    key.join
+  def random_number
+    @key = rand(0..99999)
   end
 
-  def initial_key_values(the_keys = random_number_generator)
-    key = []
-    the_keys = the_keys.to_s.chars
-    key << key_a = the_keys[0..1].join
-    key << key_b = the_keys[1..2].join
-    key << key_c = the_keys[2..3].join
-    key << key_d = the_keys[3..4].join
-    @current_key = key.map do |num|
-      num.to_i
-    end
+  def current_date
+    Time.now.strftime("%d%m%y").to_i
   end
 
-  def offset(date = nil)
-    if date.nil?
-      current_date = Time.now.strftime("%d%m%y")
-    else
-      current_date = date
+  def date_offset
+    if @date.nil?
+      @date = current_date
     end
-    current_date = current_date.to_i ** 2
-    offset = current_date.to_s[-4..-1]
-    offset = offset.chars.map do |number|
-      number.to_i
-    end
+    date_offset = (date ** 2).to_s[-4..-1]
+    date_offset.chars.map { |number| number.to_i}
   end
 
-  def key_generation(key = nil)
-    if key == nil
-      the_key = initial_key_values(random_number_generator)
-    else
-      the_key = initial_key_values(key)
+  def initial_key_values
+    rotations =[]
+    if key.nil?
+      random_number
     end
-    @offset_key = the_key.zip(offset).map do |key|
-      key.reduce(0, :+)
+    @key = key.to_s.chars
+    rotations << a_key = key[0..1].join
+    rotations << b_key = key[1..2].join
+    rotations << c_key = key[2..3].join
+    rotations << d_key = key[3..4].join
+    rotations.map! { |rot| rot.to_i }
+  end
+
+  def rotator
+    rotator = initial_key_values.zip(date_offset)
+    rotator.map do |rot|
+      rot.reduce(0, :+)
     end
   end
-end
-
-if __FILE__ == $0
-  a = KeyGenerator.new
-  a.key_generation(12345)
-  puts a.current_key
-  puts a.offset_key
 end
