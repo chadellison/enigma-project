@@ -1,5 +1,6 @@
 require_relative '../lib/cryptographer'
 require_relative '../lib/the_cracker'
+require 'pry'
 
 class Enigma
   def encrypt(message, key = nil, date = nil)

@@ -1,5 +1,5 @@
 require 'the_cracker'
-require_relative 'test_helper'
+require 'test_helper'
 
 class TheCrackerTest < Minitest::Test
 

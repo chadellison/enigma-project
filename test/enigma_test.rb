@@ -1,5 +1,5 @@
 require 'enigma'
-require_relative 'test_helper'
+require 'test_helper'
 
 class EnigmaTest < Minitest::Test
   def test_it_makes_an_enigma_object
