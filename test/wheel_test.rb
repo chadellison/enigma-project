@@ -1,9 +1,5 @@
-require 'simplecov'
-SimpleCov.start
-require 'minitest/autorun'
-require_relative '../lib/wheel'
-require_relative 'test_helper'
-require 'pry'
+require 'wheel'
+require 'test_helper'
 
 class WheelTest < Minitest::Test
   def test_it_is_part_of_the_wheel_class

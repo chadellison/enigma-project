@@ -1,9 +1,5 @@
-require 'simplecov'
-SimpleCov.start
-require 'minitest/autorun'
-require_relative '../lib/the_cracker'
+require 'the_cracker'
 require_relative 'test_helper'
-require 'pry'
 
 class TheCrackerTest < Minitest::Test
 

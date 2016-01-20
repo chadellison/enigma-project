@@ -1,9 +1,6 @@
-require 'simplecov'
-SimpleCov.start
 require 'minitest/autorun'
-require_relative '../lib/cryptographer'
-require_relative 'test_helper'
-require 'pry'
+require 'cryptographer'
+require 'test_helper'
 
 class CryptographerTest < Minitest::Test
   def test_it_belongs_to_the_cryptographer_class

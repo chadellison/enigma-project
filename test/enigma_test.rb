@@ -1,11 +1,5 @@
-require 'simplecov'
-SimpleCov.start
-require 'minitest/autorun'
-require_relative '../lib/enigma'
+require 'enigma'
 require_relative 'test_helper'
-require 'pry'
-
-
 
 class EnigmaTest < Minitest::Test
   def test_it_makes_an_enigma_object
